@@ -1,0 +1,27 @@
+{
+  "name": "pixelperfectat/magento2-klaviyo-hyva-checkout",
+  "description": "Hyva Checkout (Magewire) compatibility for Klaviyo_Reclaim. Based on hyva-themes/magento2-hyva-checkout-klaviyo-reclaim.",
+  "type": "magento2-module",
+  "require": {
+    "php": "^8.1",
+    "magento/framework": "*",
+    "hyva-themes/magento2-hyva-checkout": "*",
+    "hyva-themes/magento2-compat-module-fallback": "*",
+    "klaviyo/magento2-extension": "*"
+  },
+  "authors": [
+    {
+      "name": "PixelPerfect",
+      "homepage": "https://github.com/pixelperfectat"
+    }
+  ],
+  "license": "MIT",
+  "autoload": {
+    "files": [
+      "src/registration.php"
+    ],
+    "psr-4": {
+      "PixelPerfect\\KlaviyoHyvaCheckout\\": "src/"
+    }
+  }
+}

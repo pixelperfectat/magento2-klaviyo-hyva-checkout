@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Klaviyo\Reclaim\Block\Initialize"
+                   name="klaviyo.hyva.checkout.tracking"
+                   template="PixelPerfect_KlaviyoHyvaCheckout::checkout/klaviyo-tracking.phtml"/>
+            <block class="Klaviyo\Reclaim\Block\Initialize"
+                   name="klaviyo.hyva.checkout.cart.reload"
+                   template="PixelPerfect_KlaviyoHyvaCheckout::checkout/cart-reload.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

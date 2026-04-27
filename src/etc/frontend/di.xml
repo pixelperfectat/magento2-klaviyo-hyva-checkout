@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- Register as Hyva compat module -->
+    <type name="Hyva\CompatModuleFallback\Model\CompatModuleRegistry">
+        <arguments>
+            <argument name="compatModules" xsi:type="array">
+                <item name="pixelperfectat-klaviyo-hyva-checkout" xsi:type="array">
+                    <item name="original_module" xsi:type="string">Klaviyo_Reclaim</item>
+                    <item name="compat_module" xsi:type="string">PixelPerfect_KlaviyoHyvaCheckout</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- Email capture: save guest email to quote for abandoned cart -->
+    <!-- Email consent checkbox on guest details form (guest customers) -->
+    <type name="Hyva\Checkout\Model\Form\EntityForm\GuestDetailsForm">
+        <arguments>
+            <argument name="entityFormModifiers" xsi:type="array">
+                <item name="PixelPerfect_KlaviyoHyvaCheckout_EmailCapture" sortOrder="900"
+                      xsi:type="object">PixelPerfect\KlaviyoHyvaCheckout\Form\GuestDetails\EmailCaptureModifier</item>
+                <item name="PixelPerfect_KlaviyoHyvaCheckout_EmailConsent" sortOrder="910"
+                      xsi:type="object">PixelPerfect\KlaviyoHyvaCheckout\Form\Consent\EmailConsentModifier</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!-- SMS + Email consent on shipping address form -->
+    <type name="Hyva\Checkout\Model\Form\EntityForm\EavAttributeShippingAddressForm">
+        <arguments>
+            <argument name="entityFormModifiers" xsi:type="array">
+                <item name="PixelPerfect_KlaviyoHyvaCheckout_SmsConsent" sortOrder="900"
+                      xsi:type="object">PixelPerfect\KlaviyoHyvaCheckout\Form\Consent\SmsConsentModifier</item>
+                <item name="PixelPerfect_KlaviyoHyvaCheckout_EmailConsent" sortOrder="910"
+                      xsi:type="object">PixelPerfect\KlaviyoHyvaCheckout\Form\Consent\EmailConsentModifier</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

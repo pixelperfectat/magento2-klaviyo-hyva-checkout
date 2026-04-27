@@ -1,0 +1,62 @@
+<?php
+
+declare(strict_types=1);
+
+use Hyva\Theme\Model\ViewModelRegistry;
+use Hyva\Theme\ViewModel\HyvaCsp;
+use Klaviyo\Reclaim\Block\Initialize;
+
+/** @var Initialize $block */
+/** @var ViewModelRegistry $viewModels */
+
+if (!$block->isKlaviyoEnabled() || !$block->getPublicApiKey()) {
+    return;
+}
+
+/** @var HyvaCsp $hyvaCsp */
+$hyvaCsp = $viewModels->require(HyvaCsp::class);
+?>
+
+<div x-data="klaviyoCheckoutTracking"></div>
+
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('klaviyoCheckoutTracking', () => ({
+            lastIdentifiedEmail: null,
+
+            init() {
+                if (!window.klaviyoConsentGranted || !window.klaviyoConsentGranted()) {
+                    window.addEventListener('cookie-consent-updated', () => {
+                        if (window.klaviyoConsentGranted && window.klaviyoConsentGranted()) {
+                            this.observeEmailField();
+                        }
+                    }, { once: true });
+                    return;
+                }
+                this.observeEmailField();
+            },
+
+            observeEmailField() {
+                const emailInput = document.querySelector('input[name="email_address"], input[type="email"][id*="email"]');
+                if (!emailInput) {
+                    return;
+                }
+
+                emailInput.addEventListener('change', (e) => {
+                    this.identifyEmail(e.target.value);
+                });
+            },
+
+            identifyEmail(email) {
+                if (!email || email === this.lastIdentifiedEmail) {
+                    return;
+                }
+
+                this.lastIdentifiedEmail = email;
+                window.klaviyo = window.klaviyo || [];
+                window.klaviyo.identify({ '$email': email });
+            }
+        }));
+    });
+</script>
+<?php $hyvaCsp->registerInlineScript() ?>
