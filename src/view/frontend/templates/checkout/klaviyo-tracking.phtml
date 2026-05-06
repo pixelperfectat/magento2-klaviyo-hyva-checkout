@@ -20,8 +20,8 @@ $hyvaCsp = $viewModels->require(HyvaCsp::class);
 <div x-data="klaviyoCheckoutTracking"></div>
 
 <script>
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('klaviyoCheckoutTracking', () => ({
+    function initKlaviyoCheckoutTracking() {
+        return {
             lastIdentifiedEmail: null,
 
             init() {
@@ -56,7 +56,15 @@ $hyvaCsp = $viewModels->require(HyvaCsp::class);
                 window.klaviyo = window.klaviyo || [];
                 window.klaviyo.identify({ '$email': email });
             }
-        }));
-    });
+        };
+    }
+
+    if (window.Alpine && typeof window.Alpine.data === 'function') {
+        window.Alpine.data('klaviyoCheckoutTracking', initKlaviyoCheckoutTracking);
+    } else {
+        document.addEventListener('alpine:init', () => {
+            window.Alpine.data('klaviyoCheckoutTracking', initKlaviyoCheckoutTracking);
+        }, { once: true });
+    }
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>

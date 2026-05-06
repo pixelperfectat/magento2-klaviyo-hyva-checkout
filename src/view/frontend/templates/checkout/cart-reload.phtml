@@ -20,8 +20,8 @@ $hyvaCsp = $viewModels->require(HyvaCsp::class);
 <div x-data="klaviyoCheckoutCartReload"></div>
 
 <script>
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('klaviyoCheckoutCartReload', () => ({
+    function initKlaviyoCheckoutCartReload() {
+        return {
             init() {
                 if (!window.klaviyoConsentGranted || !window.klaviyoConsentGranted()) {
                     window.addEventListener('cookie-consent-updated', () => {
@@ -46,7 +46,15 @@ $hyvaCsp = $viewModels->require(HyvaCsp::class);
                     })
                 });
             }
-        }));
-    });
+        };
+    }
+
+    if (window.Alpine && typeof window.Alpine.data === 'function') {
+        window.Alpine.data('klaviyoCheckoutCartReload', initKlaviyoCheckoutCartReload);
+    } else {
+        document.addEventListener('alpine:init', () => {
+            window.Alpine.data('klaviyoCheckoutCartReload', initKlaviyoCheckoutCartReload);
+        }, { once: true });
+    }
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
