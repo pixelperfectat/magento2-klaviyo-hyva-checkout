@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace PixelPerfect\KlaviyoHyvaCheckout\Form\GuestDetails;
 
-use Hyva\Checkout\Magewire\Component\AbstractForm;
 use Hyva\Checkout\Model\Form\EntityFormInterface;
+use Magewirephp\Magewire\Component;
 use Hyva\Checkout\Model\Form\EntityFormModifierInterface;
 use Klaviyo\Reclaim\Helper\ScopeSetting;
 use Magento\Checkout\Model\Session as CheckoutSession;
@@ -47,7 +47,7 @@ class EmailCaptureModifier implements EntityFormModifierInterface
      */
     public function captureEmail(
         EntityFormInterface $form,
-        AbstractForm $component,
+        Component $component,
         ?string $property = null,
         mixed $value = null
     ): void {
