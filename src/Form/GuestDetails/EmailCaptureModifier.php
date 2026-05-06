@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PixelPerfect\KlaviyoHyvaCheckout\Form\GuestDetails;
 
-use Hyva\Checkout\Magewire\Checkout\AddressView\AbstractMagewireAddressForm;
+use Hyva\Checkout\Magewire\Component\AbstractForm;
 use Hyva\Checkout\Model\Form\EntityFormInterface;
 use Hyva\Checkout\Model\Form\EntityFormModifierInterface;
 use Klaviyo\Reclaim\Helper\ScopeSetting;
@@ -37,25 +37,35 @@ class EmailCaptureModifier implements EntityFormModifierInterface
         return $form;
     }
 
-    public function captureEmail(EntityFormInterface $form, AbstractMagewireAddressForm $component): void
-    {
-        $emailField = $form->getField('email_address');
-        if ($emailField === null) {
+    /**
+     * Magewire's form:updated:magewire hook fires for every property update on
+     * the form component. It passes the changed property path (e.g.
+     * "data.email_address") and new value as named arguments. We act only on
+     * email_address changes, using the value Magewire just synced rather than
+     * a $form->getField() lookup -- the form's field tree is not always
+     * hydrated when this hook fires for individual property syncs.
+     */
+    public function captureEmail(
+        EntityFormInterface $form,
+        AbstractForm $component,
+        ?string $property = null,
+        mixed $value = null
+    ): void {
+        if ($property !== 'data.email_address' && $property !== 'email_address') {
             return;
         }
 
-        $email = $emailField->getValue();
-        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (!is_string($value) || $value === '' || !filter_var($value, FILTER_VALIDATE_EMAIL)) {
             return;
         }
 
         try {
             $quote = $this->checkoutSession->getQuote();
-            if ($quote->getCustomerEmail() === $email) {
+            if ($quote->getCustomerEmail() === $value) {
                 return;
             }
 
-            $quote->setCustomerEmail($email);
+            $quote->setCustomerEmail($value);
             $quote->save();
         } catch (\Exception $e) {
             $this->logger->error('Klaviyo email capture failed: ' . $e->getMessage());

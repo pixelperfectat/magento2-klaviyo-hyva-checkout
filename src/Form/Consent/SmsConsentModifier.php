@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PixelPerfect\KlaviyoHyvaCheckout\Form\Consent;
 
-use Hyva\Checkout\Magewire\Checkout\AddressView\AbstractMagewireAddressForm;
+use Hyva\Checkout\Magewire\Component\AbstractForm;
 use Hyva\Checkout\Model\Form\EntityFormInterface;
 use Hyva\Checkout\Model\Form\EntityFormModifierInterface;
 use Klaviyo\Reclaim\Helper\ScopeSetting;
@@ -33,7 +33,7 @@ class SmsConsentModifier implements EntityFormModifierInterface
         return $form;
     }
 
-    public function addSmsConsentField(EntityFormInterface $form, AbstractMagewireAddressForm $component): void
+    public function addSmsConsentField(EntityFormInterface $form, AbstractForm $component): void
     {
         $consentText = $this->scopeSetting->getConsentAtCheckoutSMSConsentText() ?: 'Sign up for SMS';
         $sortOrder = (int) ($this->scopeSetting->getConsentAtCheckoutSMSConsentSortOrder() ?: 200);

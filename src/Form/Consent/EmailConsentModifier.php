@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PixelPerfect\KlaviyoHyvaCheckout\Form\Consent;
 
-use Hyva\Checkout\Magewire\Checkout\AddressView\AbstractMagewireAddressForm;
+use Hyva\Checkout\Magewire\Component\AbstractForm;
 use Hyva\Checkout\Model\Form\EntityFormInterface;
 use Hyva\Checkout\Model\Form\EntityFormModifierInterface;
 use Klaviyo\Reclaim\Helper\ScopeSetting;
@@ -33,7 +33,7 @@ class EmailConsentModifier implements EntityFormModifierInterface
         return $form;
     }
 
-    public function addEmailConsentField(EntityFormInterface $form, AbstractMagewireAddressForm $component): void
+    public function addEmailConsentField(EntityFormInterface $form, AbstractForm $component): void
     {
         $consentText = $this->scopeSetting->getConsentAtCheckoutEmailText() ?: 'Sign up for email marketing';
         $sortOrder = (int) ($this->scopeSetting->getConsentAtCheckoutEmailSortOrder() ?: 210);
