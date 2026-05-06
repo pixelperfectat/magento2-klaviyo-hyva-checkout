@@ -1,0 +1,53 @@
+<?php
+
+declare(strict_types=1);
+
+use Magento\Framework\Escaper;
+use Magento\Framework\View\Element\Template;
+use PixelPerfect\KlaviyoHyvaCheckout\Magewire\MarketingConsent;
+
+/** @var Escaper $escaper */
+/** @var Template $block */
+/** @var MarketingConsent $magewire */
+
+$emailEnabled = $magewire->isEmailEnabled();
+$smsEnabled = $magewire->isSmsEnabled();
+
+if (!$emailEnabled && !$smsEnabled) {
+    return;
+}
+
+$smsDisclosure = $magewire->getSmsDisclosureText();
+?>
+<div class="space-y-3">
+    <?php if ($emailEnabled): ?>
+        <label class="flex items-start gap-2 cursor-pointer">
+            <input type="checkbox"
+                   class="form-checkbox mt-1"
+                   wire:model.live="kl_email_consent"
+                   id="kl_email_consent"
+            />
+            <span class="text-sm">
+                <?= $escaper->escapeHtml($magewire->getEmailConsentText()) ?>
+            </span>
+        </label>
+    <?php endif; ?>
+
+    <?php if ($smsEnabled): ?>
+        <label class="flex items-start gap-2 cursor-pointer">
+            <input type="checkbox"
+                   class="form-checkbox mt-1"
+                   wire:model.live="kl_sms_consent"
+                   id="kl_sms_consent"
+            />
+            <span class="text-sm">
+                <?= $escaper->escapeHtml($magewire->getSmsLabelText()) ?>
+            </span>
+        </label>
+        <?php if ($smsDisclosure !== ''): ?>
+            <p class="text-xs text-gray-600 ml-6">
+                <?= $escaper->escapeHtml($smsDisclosure) ?>
+            </p>
+        <?php endif; ?>
+    <?php endif; ?>
+</div>

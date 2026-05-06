@@ -14,27 +14,13 @@
         </arguments>
     </type>
 
-    <!-- Email capture: save guest email to quote for abandoned cart -->
-    <!-- Email consent checkbox on guest details form (guest customers) -->
+    <!-- Email capture: persist the typed guest email to quote.customer_email
+         so abandoned-cart flows have an address even before order placement. -->
     <type name="Hyva\Checkout\Model\Form\EntityForm\GuestDetailsForm">
         <arguments>
             <argument name="entityFormModifiers" xsi:type="array">
                 <item name="PixelPerfect_KlaviyoHyvaCheckout_EmailCapture" sortOrder="900"
                       xsi:type="object">PixelPerfect\KlaviyoHyvaCheckout\Form\GuestDetails\EmailCaptureModifier</item>
-                <item name="PixelPerfect_KlaviyoHyvaCheckout_EmailConsent" sortOrder="910"
-                      xsi:type="object">PixelPerfect\KlaviyoHyvaCheckout\Form\Consent\EmailConsentModifier</item>
-            </argument>
-        </arguments>
-    </type>
-
-    <!-- SMS + Email consent on shipping address form -->
-    <type name="Hyva\Checkout\Model\Form\EntityForm\EavAttributeShippingAddressForm">
-        <arguments>
-            <argument name="entityFormModifiers" xsi:type="array">
-                <item name="PixelPerfect_KlaviyoHyvaCheckout_SmsConsent" sortOrder="900"
-                      xsi:type="object">PixelPerfect\KlaviyoHyvaCheckout\Form\Consent\SmsConsentModifier</item>
-                <item name="PixelPerfect_KlaviyoHyvaCheckout_EmailConsent" sortOrder="910"
-                      xsi:type="object">PixelPerfect\KlaviyoHyvaCheckout\Form\Consent\EmailConsentModifier</item>
             </argument>
         </arguments>
     </type>
