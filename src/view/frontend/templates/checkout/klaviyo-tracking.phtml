@@ -17,7 +17,7 @@ if (!$block->isKlaviyoEnabled() || !$block->getPublicApiKey()) {
 $hyvaCsp = $viewModels->require(HyvaCsp::class);
 ?>
 
-<div x-data="klaviyoCheckoutTracking"></div>
+<div x-data="initKlaviyoCheckoutTracking"></div>
 
 <script>
     function initKlaviyoCheckoutTracking() {
@@ -41,30 +41,23 @@ $hyvaCsp = $viewModels->require(HyvaCsp::class);
                 if (!emailInput) {
                     return;
                 }
+                emailInput.addEventListener('change', this.onEmailChange.bind(this));
+            },
 
-                emailInput.addEventListener('change', (e) => {
-                    this.identifyEmail(e.target.value);
-                });
+            onEmailChange(event) {
+                this.identifyEmail(event.target.value);
             },
 
             identifyEmail(email) {
                 if (!email || email === this.lastIdentifiedEmail) {
                     return;
                 }
-
                 this.lastIdentifiedEmail = email;
                 window.klaviyo = window.klaviyo || [];
                 window.klaviyo.identify({ '$email': email });
             }
         };
     }
-
-    if (window.Alpine && typeof window.Alpine.data === 'function') {
-        window.Alpine.data('klaviyoCheckoutTracking', initKlaviyoCheckoutTracking);
-    } else {
-        document.addEventListener('alpine:init', () => {
-            window.Alpine.data('klaviyoCheckoutTracking', initKlaviyoCheckoutTracking);
-        }, { once: true });
-    }
+    window.addEventListener('alpine:init', () => Alpine.data('initKlaviyoCheckoutTracking', initKlaviyoCheckoutTracking), { once: true });
 </script>
 <?php $hyvaCsp->registerInlineScript() ?>
