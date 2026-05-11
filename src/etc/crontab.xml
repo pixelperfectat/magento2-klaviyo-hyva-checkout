@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="klaviyo_syncs">
+        <job name="pixelperfect_klaviyo_started_checkout_sync"
+             instance="PixelPerfect\KlaviyoHyvaCheckout\Cron\SyncStartedCheckout"
+             method="execute">
+            <schedule>*/5 * * * *</schedule>
+        </job>
+    </group>
+</config>

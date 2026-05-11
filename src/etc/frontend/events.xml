@@ -5,4 +5,8 @@
         <observer name="pixelperfect_klaviyo_save_consent"
                   instance="PixelPerfect\KlaviyoHyvaCheckout\Observer\SaveConsentToQuote"/>
     </event>
+    <event name="controller_action_predispatch_hyva_checkout_index_index">
+        <observer name="pixelperfect_klaviyo_publish_started_checkout"
+                  instance="PixelPerfect\KlaviyoHyvaCheckout\Observer\PublishStartedCheckout"/>
+    </event>
 </config>
