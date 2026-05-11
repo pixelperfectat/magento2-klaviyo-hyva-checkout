@@ -9,7 +9,7 @@ use Magewirephp\Magewire\Component;
 use Hyva\Checkout\Model\Form\EntityFormModifierInterface;
 use Klaviyo\Reclaim\Helper\ScopeSetting;
 use Magento\Checkout\Model\Session as CheckoutSession;
-use Magento\Framework\UrlInterface;
+use Magento\Quote\Api\CartRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 class EmailCaptureModifier implements EntityFormModifierInterface
@@ -17,7 +17,7 @@ class EmailCaptureModifier implements EntityFormModifierInterface
     public function __construct(
         private ScopeSetting $scopeSetting,
         private CheckoutSession $checkoutSession,
-        private UrlInterface $urlBuilder,
+        private CartRepositoryInterface $cartRepository,
         private LoggerInterface $logger
     ) {
     }
@@ -66,7 +66,7 @@ class EmailCaptureModifier implements EntityFormModifierInterface
             }
 
             $quote->setCustomerEmail($value);
-            $quote->save();
+            $this->cartRepository->save($quote);
         } catch (\Exception $e) {
             $this->logger->error('Klaviyo email capture failed: ' . $e->getMessage());
         }

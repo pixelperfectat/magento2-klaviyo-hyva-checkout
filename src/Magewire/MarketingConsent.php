@@ -6,6 +6,7 @@ namespace PixelPerfect\KlaviyoHyvaCheckout\Magewire;
 
 use Klaviyo\Reclaim\Helper\ScopeSetting;
 use Magento\Checkout\Model\Session as CheckoutSession;
+use Magento\Quote\Api\CartRepositoryInterface;
 use Magewirephp\Magewire\Component;
 use Psr\Log\LoggerInterface;
 
@@ -25,6 +26,7 @@ class MarketingConsent extends Component
     public function __construct(
         private readonly ScopeSetting $scopeSetting,
         private readonly CheckoutSession $checkoutSession,
+        private readonly CartRepositoryInterface $cartRepository,
         private readonly LoggerInterface $logger
     ) {
     }
@@ -67,13 +69,13 @@ class MarketingConsent extends Component
         return (string) $this->scopeSetting->getConsentAtCheckoutSMSConsentText();
     }
 
-    public function updatedKlEmailConsent($value): bool
+    public function updatedKlEmailConsent(mixed $value): bool
     {
         $this->persistToQuote('kl_email_consent', (bool) $value);
         return (bool) $value;
     }
 
-    public function updatedKlSmsConsent($value): bool
+    public function updatedKlSmsConsent(mixed $value): bool
     {
         $this->persistToQuote('kl_sms_consent', (bool) $value);
         return (bool) $value;
@@ -84,7 +86,7 @@ class MarketingConsent extends Component
         try {
             $quote = $this->checkoutSession->getQuote();
             $quote->setData($field, $value ? 1 : 0);
-            $quote->save();
+            $this->cartRepository->save($quote);
         } catch (\Exception $e) {
             $this->logger->error(sprintf('Klaviyo MarketingConsent persist %s failed: %s', $field, $e->getMessage()));
         }
