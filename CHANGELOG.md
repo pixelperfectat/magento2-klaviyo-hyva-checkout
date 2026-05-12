@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-05-12
+
+### Fixed
+- Marketing-consent block no longer throws Magewire's "Missing root tag"
+  exception when both Email and SMS consent are disabled in admin. A new
+  `Block\MarketingConsent` class gates the block at the layout/PHP layer:
+  when neither consent surface is active it unsets the `magewire` argument
+  before either Magewire view-block observer runs, so the block is invisible
+  to Magewire's render lifecycle instead of producing empty markup that
+  Magewire then fails to parse.
+
 ## [0.2.0] - 2026-05-11
 
 ### Added
@@ -38,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   marketing-consent component rendered after the T&C block on the payment
   step.
 
-[Unreleased]: https://github.com/pixelperfectat/magento2-klaviyo-hyva-checkout/compare/0.2.0...HEAD
+[Unreleased]: https://github.com/pixelperfectat/magento2-klaviyo-hyva-checkout/compare/0.2.1...HEAD
+[0.2.1]: https://github.com/pixelperfectat/magento2-klaviyo-hyva-checkout/compare/0.2.0...0.2.1
 [0.2.0]: https://github.com/pixelperfectat/magento2-klaviyo-hyva-checkout/compare/v0.1.0...0.2.0
 [0.1.0]: https://github.com/pixelperfectat/magento2-klaviyo-hyva-checkout/releases/tag/v0.1.0
