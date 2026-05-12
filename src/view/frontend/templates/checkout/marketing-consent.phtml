@@ -10,13 +10,10 @@ use PixelPerfect\KlaviyoHyvaCheckout\Magewire\MarketingConsent;
 /** @var Template $block */
 /** @var MarketingConsent $magewire */
 
+// Visibility is gated upstream by Block\MarketingConsent — when this template
+// is reached, at least one of email/SMS consent is active.
 $emailEnabled = $magewire->isEmailEnabled();
 $smsEnabled = $magewire->isSmsEnabled();
-
-if (!$emailEnabled && !$smsEnabled) {
-    return;
-}
-
 $smsDisclosure = $magewire->getSmsDisclosureText();
 ?>
 <div class="space-y-3">

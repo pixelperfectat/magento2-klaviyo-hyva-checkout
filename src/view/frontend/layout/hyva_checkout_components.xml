@@ -4,6 +4,7 @@
     <body>
         <referenceContainer name="checkout.section.quote-actions">
             <block name="pixelperfect.klaviyo.marketing-consent"
+                   class="PixelPerfect\KlaviyoHyvaCheckout\Block\MarketingConsent"
                    after="checkout.terms-conditions.wrapper"
                    template="PixelPerfect_KlaviyoHyvaCheckout::checkout/marketing-consent.phtml">
                 <arguments>
